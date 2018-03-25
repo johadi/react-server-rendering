@@ -1,4 +1,4 @@
-###REACT SERVER SIDE RENDERING
+### REACT SERVER SIDE RENDERING
 This project is to simply demonstrate the concept of building Isomorphic app using React
 server side rendering.
 
