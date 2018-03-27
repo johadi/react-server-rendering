@@ -20,6 +20,6 @@ demonstrated in higher versions. Here are what this version 1 entails.
 
 #### Version 2
 
-Version 2 just abstracts the react router routes to a separate file. This makes the routes reusable between the server
+Version two just abstracts the react router routes to a separate file. This makes the routes reusable between the server
 and the client side. It also allows us to perform some complex logic which makes the state rendered from the server more
 predictable.
