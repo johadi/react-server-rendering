@@ -5,9 +5,7 @@ let initialState = {};
 
 if(typeof window !== 'undefined' && window.__INITIAL_STATE__){
   initialState = window.__INITIAL_STATE__;
-  console.log('STORE IS HERE', window.__INITIAL_STATE__);
 }
-console.log('Store time run');
 
 const store = createStore(combineReducers({userState: userReducer}), initialState);
 

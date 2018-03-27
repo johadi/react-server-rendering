@@ -2,9 +2,10 @@ import express from 'express';
 import handleAsync from 'async-error-handler';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { StaticRouter } from 'react-router';
+import { StaticRouter, matchPath } from 'react-router';
 import { Provider } from 'react-redux';
 import store from '../shared/store/store';
+import routeOptions from '../shared/routes/routes';
 import path from 'path';
 import App from '../shared/App';
 
@@ -28,7 +29,17 @@ app.get('/api/profile', handleAsync(async (req, res) => {
 
 // Other endpoints users can access in our application
 app.get('*', handleAsync(async (req, res) => {
-  await App.getUsers(store);
+  let foundPath = null;
+  const { component, path } = routeOptions.routes.find(({path, exact}) => {
+    foundPath = matchPath(req.path, {path, exact});
+    return foundPath;
+
+  }) || {};
+
+  if (component && component.getUsers) {
+    await component.getUsers(store);
+  }
+
   const context = {};
 
   const html = ReactDOMServer.renderToString(
@@ -40,8 +51,8 @@ app.get('*', handleAsync(async (req, res) => {
   );
 
   const initalState = store.getState();
-
   if(context.url) {
+    // <Redirect/> has been used to redirect on the client side. we now use express router to redirect accordingly
     const redirectUrl = `${req.protocol}://${req.headers.host}${context.url}`;
     return res.redirect(redirectUrl);
   }
@@ -96,3 +107,4 @@ const getUserDetails = (userDetails) => {
     }, 2000)
   });
 }
+
